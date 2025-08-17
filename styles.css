@@ -51,8 +51,8 @@ body {
     text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Prevent bounce scrolling */
-    position: fixed;
+    /* Better mobile input support */
+    position: relative;
     -webkit-overflow-scrolling: touch;
     /* Ensure no red bleeding */
     border: none;
@@ -162,70 +162,16 @@ body {
     overflow: hidden;
 }
 
-.text-content {
-    font-family: 'Product Sans', 'Arial', sans-serif;
-    font-size: 11px;
-    line-height: 1.5;
-    color: #ff0004;
-    font-weight: bold;
-    text-align: left;
-}
-
-/* Desktop Styles (768px and up) */
-@media screen and (min-width: 768px) {
-    .time-display {
-        top: 100px;
-        right: -30px;
-        font-size: 24px;
-        background: transparent;
-        padding: 0;
-        border-radius: 0;
-        backdrop-filter: none;
-        border: none;
-        transform: rotate(90deg);
-        transform-origin: center;
-        white-space: nowrap;
-        min-width: 120px;
-        text-align: center;
-    }
-
-    .chord-logo {
-        bottom: 50px;
-        right: 50px;
-        gap: 5px;
-        background: transparent;
-        padding: 0;
-        border-radius: 0;
-        backdrop-filter: none;
-        border: none;
-    }
-
-    .logo-image {
-        width: 100px;
-        height: 100px;
-    }
-
-    .chord-text {
-        font-size: 168px;
-    }
-
-    .left-text {
-        top: 15px;
-        left: 15px;
-        max-width: 400px;
-        background: transparent;
-        padding: 0;
-        border-radius: 0;
-        backdrop-filter: none;
-        border: none;
-    }
-
     .text-content {
-        font-size: 12px;
-        line-height: 1.6;
+        font-family: 'Product Sans', 'Arial', sans-serif;
+        font-size: 11px;
+        line-height: 1.5;
+        color: #ff0004;
+        font-weight: bold;
+        text-align: left;
     }
 
-    /* Mobile Email Section */
+    /* Base Email Section (Mobile-First) */
     .email-section {
         position: fixed;
         top: 35%;
@@ -284,6 +230,14 @@ body {
         z-index: 30;
         transition: all 0.3s ease;
         touch-action: auto;
+        /* Mobile-specific properties */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-user-select: text;
+        -webkit-touch-callout: default;
+        pointer-events: auto;
     }
 
     .text-input::placeholder {
@@ -349,6 +303,60 @@ body {
         backdrop-filter: none;
         border: none;
         box-shadow: none;
+    }
+
+/* Desktop Styles (768px and up) */
+@media screen and (min-width: 768px) {
+    .time-display {
+        top: 100px;
+        right: -30px;
+        font-size: 24px;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        backdrop-filter: none;
+        border: none;
+        transform: rotate(90deg);
+        transform-origin: center;
+        white-space: nowrap;
+        min-width: 120px;
+        text-align: center;
+    }
+
+    .chord-logo {
+        bottom: 50px;
+        right: 50px;
+        gap: 5px;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        backdrop-filter: none;
+        border: none;
+    }
+
+    .logo-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .chord-text {
+        font-size: 168px;
+    }
+
+    .left-text {
+        top: 15px;
+        left: 15px;
+        max-width: 400px;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        backdrop-filter: none;
+        border: none;
+    }
+
+    .text-content {
+        font-size: 12px;
+        line-height: 1.6;
     }
 
     .email-section {
@@ -483,6 +491,17 @@ body {
 @media (hover: none) and (pointer: coarse) {
     .text-input {
         font-size: 16px;
+        min-height: 44px; /* iOS minimum touch target */
+        -webkit-user-select: text;
+        user-select: text;
+        pointer-events: auto;
+        touch-action: auto;
+    }
+    
+    body {
+        /* Prevent iOS scroll bounce that can interfere with inputs */
+        -webkit-overflow-scrolling: auto;
+        position: relative;
     }
 }
 
