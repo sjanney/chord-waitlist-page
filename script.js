@@ -200,6 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (SHOW_EMAIL_SECTION) {
         const nameInput = document.getElementById('name-input');
         const emailInput = document.getElementById('email-input');
+        const submitButton = document.getElementById('submit-button');
         
         // Handle Enter key press on either input
         nameInput.addEventListener('keypress', function(e) {
@@ -212,6 +213,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.key === 'Enter') {
                 handleFormSubmission();
             }
+        });
+        
+        // Handle submit button click
+        submitButton.addEventListener('click', function() {
+            handleFormSubmission();
         });
         
         // Handle input focus for better UX

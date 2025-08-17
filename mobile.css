@@ -92,6 +92,57 @@
     display: none;
 }
 
+/* Submit Button */
+.submit-button {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Product Sans', 'Arial', sans-serif;
+    font-size: 16px;
+    color: #ff0004;
+    text-align: center;
+    padding: 12px 15px;
+    margin: 0;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    z-index: 10;
+    transition: all 0.3s ease;
+    /* Safari mobile optimizations */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-tap-highlight-color: transparent;
+    /* Prevent zoom on focus */
+    -webkit-text-size-adjust: 100%;
+    /* Smooth text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Better touch interaction */
+    touch-action: manipulation;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.submit-button:hover {
+    color: rgba(255, 0, 4, 0.8);
+}
+
+.submit-button:active {
+    color: rgba(255, 0, 4, 0.6);
+}
+
+.submit-button:focus {
+    outline: none;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+}
+
 /* Mobile-First Goodbye Message */
 .goodbye-message {
     position: fixed;
