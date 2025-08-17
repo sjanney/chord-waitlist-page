@@ -10,7 +10,7 @@ npm install -g vercel
 
 ## Step 2: Prepare Your Service Account Key
 1. Open your `service-account-key.json` file
-2. Copy the entire JSON content
+2. Copy the entire JSON content (all of it, including the curly braces)
 3. You'll need this for the environment variable setup
 
 ## Step 3: Deploy to Vercel
@@ -41,7 +41,7 @@ vercel
 ### In Vercel Dashboard:
 1. Go to your project settings
 2. Click "Environment Variables"
-3. Add these variables:
+3. Add these **TWO** variables:
 
 **Variable 1:**
 - Name: `SPREADSHEET_ID`
@@ -110,6 +110,10 @@ Make sure your `GOOGLE_SERVICE_ACCOUNT_KEY` is the complete JSON string:
 - Vercel functions have a 10-second timeout
 - This should be plenty for Google Sheets API calls
 
+### "Environment variable not found" error:
+- Make sure both `SPREADSHEET_ID` and `GOOGLE_SERVICE_ACCOUNT_KEY` are set
+- Ensure they're set for all environments (Production, Preview, Development)
+
 ## Benefits of Vercel Deployment
 - ✅ **Free tier**: Generous limits
 - ✅ **Global CDN**: Fast loading worldwide
@@ -122,3 +126,9 @@ Make sure your `GOOGLE_SERVICE_ACCOUNT_KEY` is the complete JSON string:
 - Check Vercel dashboard for function logs
 - Monitor Google Sheets for new entries
 - Set up alerts if needed
+
+## Quick Test
+To test if your environment variables are set correctly, visit:
+`https://your-vercel-url.vercel.app/api/env-test`
+
+This will show you the status of your environment variables without making any changes to your Google Sheet.
