@@ -52,22 +52,23 @@ let googleApiInitialized = false;
 async function loadConfig() {
     try {
         console.log('🔧 Loading configuration from environment variables...');
-        const response = await fetch('/api/config');
-        const config = await response.json();
         
-        if (config.error) {
-            throw new Error(config.error);
-        }
+        // For local development, we'll use placeholder values
+        // In production, you can set these directly in the script or use environment variables
+        GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY_HERE';
+        SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE';
         
-        GOOGLE_API_KEY = config.googleApiKey;
-        SPREADSHEET_ID = config.spreadsheetId;
-        
-        console.log('✅ Configuration loaded:', {
-            hasApiKey: config.hasApiKey,
-            hasSpreadsheetId: config.hasSpreadsheetId
+        console.log('✅ Configuration loaded (local mode):', {
+            hasApiKey: !!GOOGLE_API_KEY,
+            hasSpreadsheetId: !!SPREADSHEET_ID
         });
         
-        return config;
+        return {
+            hasApiKey: !!GOOGLE_API_KEY,
+            hasSpreadsheetId: !!SPREADSHEET_ID,
+            googleApiKey: GOOGLE_API_KEY,
+            spreadsheetId: SPREADSHEET_ID
+        };
     } catch (error) {
         console.error('❌ Failed to load configuration:', error);
         throw error;
