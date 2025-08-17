@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Integration Test - Chord Waitlist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Product Sans', Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            color: #ff0004;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid #00ff00;
+            color: #00ff00;
+        }
+        
+        .status.error {
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+        }
+        
+        .status.warning {
+            background: rgba(255, 165, 0, 0.2);
+            border: 1px solid #ffa500;
+            color: #ffa500;
+        }
+        
+        .form-group {
+            margin: 20px 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        button {
+            background: #ff0004;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 5px;
+        }
+        
+        button:hover {
+            background: #cc0003;
+        }
+        
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        
+        .log {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 4px solid #ff0004;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .step h3 {
+            color: #ff0004;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Supabase Integration Test</h1>
+        
+        <div class="step">
+            <h3>Step 1: Check Configuration</h3>
+            <div id="config-status" class="status warning">Checking configuration...</div>
+            <button onclick="checkConfig()">Check Config</button>
+        </div>
+        
+        <div class="step">
+            <h3>Step 2: Test Form Submission</h3>
+            <div id="submission-status" class="status warning">Ready to test</div>
+            
+            <div class="form-group">
+                <label for="test-name">Name:</label>
+                <input type="text" id="test-name" placeholder="Enter your name">
+            </div>
+            
+            <div class="form-group">
+                <label for="test-email">Email:</label>
+                <input type="email" id="test-email" placeholder="Enter your email">
+            </div>
+            
+            <button onclick="testSubmission()">Test Submission</button>
+            <button onclick="clearLog()">Clear Log</button>
+        </div>
+        
+        <div class="step">
+            <h3>Step 3: Setup Instructions</h3>
+            <div class="status success">
+                <strong>To complete setup:</strong><br>
+                1. Create a Supabase account at <a href="https://supabase.com" target="_blank" style="color: #00ff00;">supabase.com</a><br>
+                2. Create a new project<br>
+                3. Create a table called `waitlist_entries`<br>
+                4. Get your API credentials<br>
+                5. Add them to your `.env` file<br>
+                6. Restart the server
+            </div>
+            <button onclick="openSetupGuide()">View Setup Guide</button>
+        </div>
+        
+        <div class="log" id="log">
+            <div>🔍 Test log will appear here...</div>
+        </div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ff0000' : type === 'success' ? '#00ff00' : '#ffffff';
+            logDiv.innerHTML += `<div style="color: ${color}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '<div>🔍 Test log cleared...</div>';
+        }
+        
+        async function checkConfig() {
+            const statusDiv = document.getElementById('config-status');
+            statusDiv.className = 'status warning';
+            statusDiv.textContent = 'Checking configuration...';
+            
+            try {
+                log('🔧 Checking configuration...');
+                const response = await fetch('/api/config');
+                const config = await response.json();
+                
+                log(`📊 Config response: ${JSON.stringify(config, null, 2)}`);
+                
+                if (config.hasSupabase) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Supabase is configured!';
+                    log('✅ Supabase configuration found', 'success');
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '❌ Supabase not configured';
+                    log('❌ Supabase not configured - check your .env file', 'error');
+                }
+                
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Failed to check configuration';
+                log(`❌ Error checking config: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testSubmission() {
+            const name = document.getElementById('test-name').value.trim();
+            const email = document.getElementById('test-email').value.trim();
+            const statusDiv = document.getElementById('submission-status');
+            
+            if (!name || !email) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Please enter both name and email';
+                log('❌ Form validation failed - missing fields', 'error');
+                return;
+            }
+            
+            statusDiv.className = 'status warning';
+            statusDiv.textContent = '🔄 Submitting...';
+            
+            try {
+                log(`📝 Submitting: ${name} (${email})`);
+                
+                const response = await fetch('/api/submit-waitlist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Submission successful!';
+                    log(`✅ Success: ${result.message}`, 'success');
+                    log(`📊 Response: ${JSON.stringify(result, null, 2)}`);
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = `❌ ${result.error}`;
+                    log(`❌ Error: ${result.error}`, 'error');
+                }
+                
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Network error';
+                log(`❌ Network error: ${error.message}`, 'error');
+            }
+        }
+        
+        function openSetupGuide() {
+            window.open('SUPABASE_SETUP.md', '_blank');
+        }
+        
+        // Auto-check config on page load
+        window.addEventListener('load', () => {
+            log('🚀 Supabase test page loaded');
+            setTimeout(checkConfig, 1000);
+        });
+    </script>
+</body>
+</html>

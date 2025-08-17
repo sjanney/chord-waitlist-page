@@ -4,127 +4,180 @@
     box-sizing: border-box;
 }
 
+/* Ensure no red elements extend beyond viewport */
+* {
+    max-width: 100vw;
+    max-height: 100vh;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: #1a1a1a;
+}
+
 body {
     font-family: 'Product Sans', 'Arial', sans-serif;
     overflow: hidden;
     height: 100vh;
     width: 100vw;
+    margin: 0;
+    padding: 0;
+    background: #1a1a1a;
     /* Mobile optimization */
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* Ensure no red bleeding */
+    border: none;
+    outline: none;
+    /* Remove any potential red elements */
+    color: inherit;
 }
 
 .background-image {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background-image: url('./assets/background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    z-index: 1;
 }
 
+/* Mobile-First Time Display */
 .time-display {
-    position: absolute;
-    top: 100px;
-    right: -50px;
-    font-size: 24px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 16px;
     color: #fc0000;
     font-weight: bold;
-    transform: rotate(90deg);
-    transform-origin: center;
+    z-index: 20;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+    border: none;
+    /* Ensure it doesn't extend beyond viewport */
+    max-width: calc(100vw - 40px);
+    overflow: hidden;
     white-space: nowrap;
-    /* Mobile adjustments */
-    z-index: 5;
 }
 
+/* Mobile-First Logo */
 .chord-logo {
-    position: absolute;
-    bottom: 0px;
-    right: 50px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
     display: flex;
-    align-items: baseline;
-    gap: 5px;
-    z-index: 5;
+    align-items: center;
+    gap: 8px;
+    z-index: 15;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+    border: none;
 }
 
 .logo-image {
-    width: 100px;
-    height: 100px;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
 }
 
 .chord-text {
-    font-size: 168px;
+    font-size: 32px;
     color: #EDD4D5;
     font-weight: bold;
     text-transform: lowercase;
     margin: 0;
 }
 
+/* Mobile-First Left Text */
 .left-text {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    max-width: 400px;
-    z-index: 5;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    max-width: calc(100vw - 40px);
+    z-index: 15;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+    border: none;
+    /* Ensure it doesn't extend beyond viewport */
+    overflow: hidden;
 }
 
 .text-content {
     font-family: 'Product Sans', 'Arial', sans-serif;
-    font-size: 12px;
-    line-height: 1.6;
+    font-size: 11px;
+    line-height: 1.5;
     color: #ff0004;
     font-weight: bold;
     text-align: left;
 }
 
+/* Mobile-First Email Section */
 .email-section {
-    position: absolute;
-    top: 35%;
+    position: fixed;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    z-index: 10;
-    width: 100%;
-    max-width: 300px;
-    padding: 0 20px;
+    gap: 25px;
+    z-index: 25;
+    width: 90%;
+    max-width: 320px;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
 }
 
 .email-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    gap: 20px;
     width: 100%;
 }
 
 .main-text {
     font-family: 'Product Sans', 'Arial', sans-serif;
-    font-size: 18px;
+    font-size: 20px;
     color: #ff0004;
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .text-input {
     background: transparent;
     border: none;
+    border-radius: 0;
     outline: none;
     font-family: 'Product Sans', 'Arial', sans-serif;
-    font-size: 13px;
+    font-size: 16px;
     color: #ff0004;
     text-align: center;
-    width: 200px;
-    max-width: 100%;
-    padding: 0;
+    width: 100%;
+    max-width: 280px;
+    padding: 15px 20px;
     margin: 0;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -133,64 +186,176 @@ body {
     user-select: text;
     position: relative;
     z-index: 10;
-    /* Mobile input optimization */
-    font-size: 16px; /* Prevents zoom on iOS */
+    transition: all 0.3s ease;
 }
 
 .text-input::placeholder {
-    color: #ff0004;
-    opacity: 0.8;
+    color: rgba(255, 0, 4, 0.6);
+    font-weight: normal;
 }
 
 .text-input:focus {
     outline: none;
     border: none;
+    background: transparent;
     box-shadow: none;
 }
 
+/* Remove the old input lines */
 .input-line {
-    width: 84px;
-    height: 1px;
-    background-color: #ff0004;
-    margin-top: -2px;
+    display: none;
 }
 
+/* Mobile-First Goodbye Message */
 .goodbye-message {
-    position: absolute;
-    top: 35%;
+    position: fixed;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: 'Product Sans', 'Arial', sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     color: #ff0004;
     text-align: center;
     opacity: 0;
     transition: opacity 0.5s ease-in;
-    z-index: 10;
-    width: 100%;
-    max-width: 300px;
-    padding: 0 20px;
+    z-index: 25;
+    width: 90%;
+    max-width: 320px;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
 }
 
-/* Mobile Responsive Styles */
-@media screen and (max-width: 768px) {
-    body {
-        overflow-x: hidden;
-        overflow-y: auto;
-        min-height: 100vh;
-    }
-
+/* Desktop Styles (768px and up) */
+@media screen and (min-width: 768px) {
     .time-display {
-        top: 20px;
+        top: 100px;
         right: -30px;
-        font-size: 18px;
+        font-size: 24px;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        backdrop-filter: none;
+        border: none;
         transform: rotate(90deg);
+        transform-origin: center;
+        white-space: nowrap;
+        min-width: 120px;
+        text-align: center;
     }
 
     .chord-logo {
-        bottom: 20px;
-        right: 20px;
-        gap: 3px;
+        bottom: 50px;
+        right: 50px;
+        gap: 5px;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        backdrop-filter: none;
+        border: none;
+    }
+
+    .logo-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .chord-text {
+        font-size: 168px;
+    }
+
+    .left-text {
+        top: 15px;
+        left: 15px;
+        max-width: 400px;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        backdrop-filter: none;
+        border: none;
+    }
+
+    .text-content {
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .email-section {
+        top: 35%;
+        gap: 20px;
+        width: 100%;
+        max-width: 300px;
+        padding: 0 20px;
+        background: transparent;
+        border-radius: 0;
+        backdrop-filter: none;
+        border: none;
+        box-shadow: none;
+    }
+
+    .email-container {
+        gap: 5px;
+    }
+
+    .main-text {
+        font-size: 18px;
+        margin-bottom: 10px;
+        text-transform: none;
+        letter-spacing: normal;
+    }
+
+    .text-input {
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        font-size: 13px;
+        width: 200px;
+        max-width: 200px;
+        padding: 0;
+        margin: 0;
+        transition: none;
+    }
+
+    .text-input::placeholder {
+        color: #ff0004;
+        opacity: 0.8;
+    }
+
+    .text-input:focus {
+        outline: none;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .goodbye-message {
+        top: 35%;
+        font-size: 14px;
+        width: 100%;
+        max-width: 300px;
+        padding: 0 20px;
+        background: transparent;
+        border-radius: 0;
+        backdrop-filter: none;
+        border: none;
+        box-shadow: none;
+    }
+}
+
+/* Tablet Styles (768px) */
+@media screen and (max-width: 768px) and (min-width: 481px) {
+    .time-display {
+        top: 30px;
+        right: 25px;
+        font-size: 18px;
+    }
+
+    .chord-logo {
+        bottom: 30px;
+        right: 25px;
     }
 
     .logo-image {
@@ -203,9 +368,58 @@ body {
     }
 
     .left-text {
-        top: 10px;
-        left: 10px;
-        max-width: 280px;
+        top: 30px;
+        left: 25px;
+        max-width: 320px;
+    }
+
+    .text-content {
+        font-size: 12px;
+    }
+
+    .email-section {
+        gap: 20px;
+        padding: 25px 20px;
+    }
+
+    .main-text {
+        font-size: 18px;
+    }
+
+    .text-input {
+        padding: 12px 18px;
+    }
+}
+
+/* Small Mobile Devices (480px and below) */
+@media screen and (max-width: 480px) {
+    .time-display {
+        top: 15px;
+        right: 15px;
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+
+    .chord-logo {
+        bottom: 15px;
+        right: 15px;
+        padding: 8px 12px;
+    }
+
+    .logo-image {
+        width: 35px;
+        height: 35px;
+    }
+
+    .chord-text {
+        font-size: 28px;
+    }
+
+    .left-text {
+        top: 15px;
+        left: 15px;
+        max-width: 250px;
+        padding: 12px;
     }
 
     .text-content {
@@ -214,62 +428,95 @@ body {
     }
 
     .email-section {
-        top: 40%;
-        gap: 15px;
-        padding: 0 15px;
+        gap: 20px;
+        padding: 25px 15px;
     }
 
-    .email-container {
-        gap: 8px;
+    .main-text {
+        font-size: 18px;
+    }
+
+    .text-input {
+        padding: 12px 15px;
+        font-size: 16px;
+    }
+}
+
+/* Extra Small Mobile Devices (360px and below) */
+@media screen and (max-width: 360px) {
+    .time-display {
+        top: 10px;
+        right: 10px;
+        font-size: 12px;
+        padding: 5px 8px;
+    }
+
+    .chord-logo {
+        bottom: 10px;
+        right: 10px;
+        padding: 6px 10px;
+    }
+
+    .logo-image {
+        width: 30px;
+        height: 30px;
+    }
+
+    .chord-text {
+        font-size: 24px;
+    }
+
+    .left-text {
+        top: 10px;
+        left: 10px;
+        max-width: 200px;
+        padding: 10px;
+    }
+
+    .text-content {
+        font-size: 9px;
+    }
+
+    .email-section {
+        gap: 15px;
+        padding: 20px 12px;
     }
 
     .main-text {
         font-size: 16px;
-        margin-bottom: 8px;
     }
 
     .text-input {
-        width: 180px;
-        font-size: 16px;
-    }
-
-    .input-line {
-        width: 70px;
-    }
-
-    .goodbye-message {
-        top: 40%;
-        font-size: 13px;
-        padding: 0 15px;
+        padding: 10px 12px;
     }
 }
 
-/* Small Mobile Devices */
-@media screen and (max-width: 480px) {
+/* Landscape Mobile */
+@media screen and (max-height: 500px) and (orientation: landscape) {
     .time-display {
-        top: 15px;
-        right: -25px;
-        font-size: 16px;
+        top: 10px;
+        right: 15px;
+        font-size: 14px;
     }
 
     .chord-logo {
-        bottom: 15px;
+        bottom: 10px;
         right: 15px;
     }
 
     .logo-image {
-        width: 50px;
-        height: 50px;
+        width: 30px;
+        height: 30px;
     }
 
     .chord-text {
-        font-size: 60px;
+        font-size: 24px;
     }
 
     .left-text {
-        top: 8px;
-        left: 8px;
-        max-width: 240px;
+        top: 10px;
+        left: 15px;
+        max-width: 200px;
     }
 
     .text-content {
@@ -278,157 +525,40 @@ body {
     }
 
     .email-section {
-        top: 45%;
-        gap: 12px;
-        padding: 0 10px;
+        gap: 15px;
+        padding: 20px 15px;
     }
 
     .main-text {
-        font-size: 14px;
-        margin-bottom: 6px;
-    }
-
-    .text-input {
-        width: 160px;
         font-size: 16px;
-    }
-
-    .input-line {
-        width: 60px;
-    }
-
-    .goodbye-message {
-        top: 45%;
-        font-size: 12px;
-        padding: 0 10px;
-    }
-}
-
-/* Extra Small Mobile Devices */
-@media screen and (max-width: 360px) {
-    .chord-logo {
-        bottom: 10px;
-        right: 10px;
-    }
-
-    .logo-image {
-        width: 40px;
-        height: 40px;
-    }
-
-    .chord-text {
-        font-size: 50px;
-    }
-
-    .left-text {
-        max-width: 200px;
-    }
-
-    .text-content {
-        font-size: 8px;
-    }
-
-    .email-section {
-        top: 50%;
-        gap: 10px;
-    }
-
-    .main-text {
-        font-size: 13px;
+        margin-bottom: 5px;
     }
 
     .text-input {
-        width: 140px;
-    }
-
-    .input-line {
-        width: 50px;
-    }
-
-    .goodbye-message {
-        top: 50%;
-        font-size: 11px;
-    }
-}
-
-/* Landscape Mobile */
-@media screen and (max-height: 500px) and (orientation: landscape) {
-    .time-display {
-        top: 10px;
-        right: -20px;
+        padding: 10px 15px;
         font-size: 14px;
-    }
-
-    .chord-logo {
-        bottom: 10px;
-        right: 15px;
-    }
-
-    .logo-image {
-        width: 40px;
-        height: 40px;
-    }
-
-    .chord-text {
-        font-size: 50px;
-    }
-
-    .left-text {
-        top: 5px;
-        left: 5px;
-        max-width: 200px;
-    }
-
-    .text-content {
-        font-size: 8px;
-        line-height: 1.2;
-    }
-
-    .email-section {
-        top: 50%;
-        gap: 8px;
-    }
-
-    .main-text {
-        font-size: 12px;
-        margin-bottom: 4px;
-    }
-
-    .text-input {
-        width: 120px;
-        font-size: 14px;
-    }
-
-    .input-line {
-        width: 40px;
-    }
-
-    .goodbye-message {
-        top: 50%;
-        font-size: 10px;
     }
 }
 
 /* High DPI Displays */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .text-input {
-        font-size: 16px; /* Prevents zoom on high DPI displays */
+        font-size: 16px;
     }
 }
 
 /* Touch Device Optimizations */
 @media (hover: none) and (pointer: coarse) {
     .text-input {
-        font-size: 16px; /* Prevents zoom on touch devices */
+        font-size: 16px;
     }
     
     .email-section {
-        /* Add some touch-friendly spacing */
-        gap: 25px;
+        gap: 30px;
     }
     
     .email-container {
-        gap: 12px;
+        gap: 25px;
     }
 }
 
@@ -451,5 +581,7 @@ body {
         position: static;
         transform: none;
         margin: 10px 0;
+        background: white;
+        border: 1px solid #ccc;
     }
 }

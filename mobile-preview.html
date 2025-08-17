@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Mobile Design Preview - Chord Waitlist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #ff0004;
+        }
+        .preview-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .device-showcase {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .device-frame {
+            border: 3px solid #ff0004;
+            border-radius: 20px;
+            padding: 15px;
+            background: #000;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .device-frame h3 {
+            margin: 0 0 15px 0;
+            font-size: 16px;
+            color: #ff0004;
+        }
+        .device-screen {
+            width: 200px;
+            height: 350px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            border: 1px solid #333;
+        }
+        .device-screen.large {
+            width: 300px;
+            height: 500px;
+        }
+        .device-screen.small {
+            width: 150px;
+            height: 280px;
+        }
+        .device-screen.tiny {
+            width: 120px;
+            height: 220px;
+        }
+        
+        /* Mock Mobile Elements */
+        .mock-time {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 14px;
+            color: #fc0000;
+            font-weight: bold;
+            z-index: 20;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            backdrop-filter: none;
+            border: none;
+        }
+        .mock-logo {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 15;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            backdrop-filter: none;
+            border: none;
+        }
+        .mock-logo-text {
+            font-size: 28px;
+            color: #EDD4D5;
+            font-weight: bold;
+        }
+        .mock-left-text {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            max-width: 250px;
+            z-index: 15;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            backdrop-filter: none;
+            border: none;
+        }
+        .mock-left-text-content {
+            font-size: 10px;
+            line-height: 1.4;
+            color: #ff0004;
+            font-weight: bold;
+        }
+        .mock-email-section {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 25;
+            width: 85%;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            backdrop-filter: none;
+            border: none;
+            box-shadow: none;
+        }
+        .mock-email-title {
+            font-size: 18px;
+            color: #ff0004;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .mock-input {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 12px 15px;
+            margin: 8px 0;
+            color: #ff0004;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        /* Desktop mock elements */
+        .mock-time.desktop {
+            top: 100px;
+            right: -30px;
+            font-size: 24px;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            backdrop-filter: none;
+            border: none;
+            transform: rotate(90deg);
+            transform-origin: center;
+            white-space: nowrap;
+            min-width: 120px;
+            text-align: center;
+        }
+        .mock-logo.desktop {
+            bottom: 50px;
+            right: 50px;
+            gap: 5px;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            backdrop-filter: none;
+            border: none;
+        }
+        .mock-logo-text.desktop {
+            font-size: 168px;
+        }
+        .mock-left-text.desktop {
+            top: 15px;
+            left: 15px;
+            max-width: 400px;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            backdrop-filter: none;
+            border: none;
+        }
+        .mock-left-text-content.desktop {
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        .mock-email-section.desktop {
+            top: 35%;
+            width: 100%;
+            max-width: 300px;
+            padding: 0 20px;
+            background: transparent;
+            border-radius: 0;
+            backdrop-filter: none;
+            border: none;
+            box-shadow: none;
+        }
+        .mock-email-title.desktop {
+            font-size: 18px;
+            margin-bottom: 10px;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+        .mock-input.desktop {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            font-size: 13px;
+            width: 200px;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .improvements {
+            background: rgba(255, 0, 4, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        .improvements h3 {
+            margin: 0 0 15px 0;
+            color: #ff0004;
+        }
+        .improvements ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .improvements li {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 0, 4, 0.2);
+        }
+        .feature-card h4 {
+            margin: 0 0 10px 0;
+            color: #ff0004;
+        }
+        .test-links {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .test-links a {
+            color: #ff0004;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 10px 20px;
+            border: 2px solid #ff0004;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .test-links a:hover {
+            background: #ff0004;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <h1>📱 Mobile-First Design Preview</h1>
+        
+        <div class="improvements">
+            <h3>🎯 Major Mobile Improvements</h3>
+            <p>Your Chord waitlist page now uses a <strong>mobile-first design approach</strong> with modern UI elements that look great on all devices!</p>
+        </div>
+
+        <div class="device-showcase">
+            <div class="device-frame">
+                <h3>Desktop (768px+)</h3>
+                <div class="device-screen large">
+                    <div class="mock-time desktop">12:34:56 PM</div>
+                    <div class="mock-logo desktop">
+                        <div class="mock-logo-text desktop">chord</div>
+                    </div>
+                    <div class="mock-left-text desktop">
+                        <div class="mock-left-text-content desktop">08.16.25 - coding and creating<br>05.28.25 - outlined processes</div>
+                    </div>
+                    <div class="mock-email-section desktop">
+                        <div class="mock-email-title desktop">enter your info</div>
+                        <div class="mock-input desktop">your name here</div>
+                        <div class="mock-input desktop">your email here</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="device-frame">
+                <h3>Mobile (480px)</h3>
+                <div class="device-screen small">
+                    <div class="mock-time">12:34</div>
+                    <div class="mock-logo">
+                        <div class="mock-logo-text">chord</div>
+                    </div>
+                    <div class="mock-left-text">
+                        <div class="mock-left-text-content">08.16.25 - coding<br>05.28.25 - processes</div>
+                    </div>
+                    <div class="mock-email-section">
+                        <div class="mock-email-title">enter your info</div>
+                        <div class="mock-input">your name here</div>
+                        <div class="mock-input">your email here</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="device-frame">
+                <h3>Small Mobile (360px)</h3>
+                <div class="device-screen tiny">
+                    <div class="mock-time">12:34</div>
+                    <div class="mock-logo">
+                        <div class="mock-logo-text">chord</div>
+                    </div>
+                    <div class="mock-left-text">
+                        <div class="mock-left-text-content">08.16.25</div>
+                    </div>
+                    <div class="mock-email-section">
+                        <div class="mock-email-title">enter info</div>
+                        <div class="mock-input">name</div>
+                        <div class="mock-input">email</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎨 Clean Mobile Design</h4>
+                <ul>
+                    <li><strong>Minimal Interface:</strong> Clean, uncluttered mobile experience</li>
+                    <li><strong>Transparent Elements:</strong> No distracting background boxes</li>
+                    <li><strong>Floating Elements:</strong> Elements appear to float over background</li>
+                    <li><strong>Focus on Content:</strong> Content takes center stage</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📱 Touch-Friendly Design</h4>
+                <ul>
+                    <li><strong>Larger Input Fields:</strong> 16px font prevents zoom</li>
+                    <li><strong>Generous Spacing:</strong> 25px gaps between elements</li>
+                    <li><strong>Touch Targets:</strong> Minimum 44px touch areas</li>
+                    <li><strong>Visual Feedback:</strong> Focus states and transitions</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h4>⚡ Performance Optimizations</h4>
+                <ul>
+                    <li><strong>Mobile-First CSS:</strong> Optimized for small screens</li>
+                    <li><strong>Efficient Media Queries:</strong> Progressive enhancement</li>
+                    <li><strong>Hardware Acceleration:</strong> Backdrop-filter for smooth animations</li>
+                    <li><strong>Reduced Repaints:</strong> Optimized positioning</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🎯 Better UX</h4>
+                <ul>
+                    <li><strong>Fixed Positioning:</strong> Elements stay in view</li>
+                    <li><strong>Improved Readability:</strong> Better contrast and sizing</li>
+                    <li><strong>Consistent Spacing:</strong> Harmonious layout</li>
+                    <li><strong>Accessibility:</strong> Proper focus management</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="improvements">
+            <h3>🔧 Key Changes Made</h3>
+            <ul>
+                <li><strong>Mobile-First Approach:</strong> Designed for mobile first, then enhanced for desktop</li>
+                <li><strong>Clean Mobile Design:</strong> Minimal, transparent elements without distracting boxes</li>
+                <li><strong>Fixed Positioning:</strong> All elements use fixed positioning for better mobile experience</li>
+                <li><strong>Touch-Optimized Inputs:</strong> Larger, more accessible form fields</li>
+                <li><strong>Responsive Typography:</strong> Font sizes that scale appropriately</li>
+                <li><strong>Better Spacing:</strong> Generous padding and margins for touch interaction</li>
+                <li><strong>Visual Hierarchy:</strong> Clear distinction between different UI elements</li>
+                <li><strong>Minimal Aesthetics:</strong> Clean, uncluttered design that focuses on content</li>
+            </ul>
+        </div>
+
+        <div class="test-links">
+            <h3>🧪 Test Your New Mobile Design</h3>
+            <p>Try these links to see the improvements in action:</p>
+            <a href="/">Main Page</a>
+            <a href="/mobile-test.html">Mobile Test</a>
+            <a href="/test-time-display.html">Time Display Test</a>
+        </div>
+    </div>
+</body>
+</html>

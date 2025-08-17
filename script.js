@@ -1,5 +1,5 @@
 // Email Section Visibility Control
-const SHOW_EMAIL_SECTION = false; // Set to false to hide the email section completely
+const SHOW_EMAIL_SECTION = true; // Set to false to hide the email section completely
 
 // Military Time Display
 function updateTime() {
@@ -43,117 +43,87 @@ function initializeEmailSection() {
     }
 }
 
-// Google Sheets API Configuration - Loaded from environment variables
-let GOOGLE_API_KEY = null;
-let SPREADSHEET_ID = null;
-let googleApiInitialized = false;
+// Supabase Configuration
+let SUPABASE_CONFIGURED = false;
 
 // Load configuration from environment variables
 async function loadConfig() {
     try {
         console.log('🔧 Loading configuration from environment variables...');
         
-        // For local development, we'll use placeholder values
-        // In production, you can set these directly in the script or use environment variables
-        GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY_HERE';
-        SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE';
+        // Check if Supabase is configured via server endpoint
+        const response = await fetch('/api/config');
+        const config = await response.json();
         
-        console.log('✅ Configuration loaded (local mode):', {
-            hasApiKey: !!GOOGLE_API_KEY,
-            hasSpreadsheetId: !!SPREADSHEET_ID
+        SUPABASE_CONFIGURED = config.hasSupabase;
+        
+        console.log('✅ Configuration loaded:', {
+            hasSupabase: SUPABASE_CONFIGURED
         });
         
         return {
-            hasApiKey: !!GOOGLE_API_KEY,
-            hasSpreadsheetId: !!SPREADSHEET_ID,
-            googleApiKey: GOOGLE_API_KEY,
-            spreadsheetId: SPREADSHEET_ID
+            hasSupabase: SUPABASE_CONFIGURED
         };
     } catch (error) {
         console.error('❌ Failed to load configuration:', error);
-        throw error;
+        // Fallback to local mode
+        SUPABASE_CONFIGURED = false;
+        return {
+            hasSupabase: false
+        };
     }
 }
 
-// Initialize Google API
-function initGoogleAPI() {
+// Initialize Supabase API
+function initSupabaseAPI() {
     return new Promise(async (resolve, reject) => {
         try {
             // Load configuration first
             await loadConfig();
             
-            // Check if API key is configured
-            if (!GOOGLE_API_KEY) {
-                const error = 'Google API key not configured. Please set GOOGLE_API_KEY environment variable.';
+            // Check if Supabase is configured
+            if (!SUPABASE_CONFIGURED) {
+                const error = 'Supabase not configured. Please set SUPABASE_URL and SUPABASE_ANON_KEY environment variables.';
                 console.error('❌', error);
                 reject(new Error(error));
                 return;
             }
             
-            gapi.load('client', async () => {
-                try {
-                    await gapi.client.init({
-                        apiKey: GOOGLE_API_KEY,
-                        discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-                    });
-                    
-                    // Load the sheets API specifically
-                    await gapi.client.load('sheets', 'v4');
-                    
-                    googleApiInitialized = true;
-                    console.log('✅ Google API initialized successfully');
-                    console.log('✅ Google Sheets API loaded');
-                    resolve();
-                } catch (error) {
-                    console.error('❌ Failed to initialize Google API:', error);
-                    reject(error);
-                }
-            });
+            console.log('✅ Supabase API ready');
+            resolve();
         } catch (error) {
             reject(error);
         }
     });
 }
 
-// Add entry to Google Sheets
-async function addToGoogleSheets(name, email) {
+// Add entry to Supabase
+async function addToSupabase(name, email) {
     try {
-        // Check if spreadsheet ID is configured
-        if (!SPREADSHEET_ID) {
-            throw new Error('Spreadsheet ID not configured. Please set SPREADSHEET_ID environment variable.');
-        }
+        console.log('🌐 Making Supabase API call...');
         
-        // Check if API is initialized
-        if (!googleApiInitialized) {
-            console.log('🔄 Google API not initialized, initializing now...');
-            await initGoogleAPI();
-        }
-        
-        // Double-check that sheets API is available
-        if (!gapi.client.sheets) {
-            throw new Error('Google Sheets API not available. Please check your API key and try again.');
-        }
-        
-        console.log('🌐 Making direct Google Sheets API call...');
-        
-        const entryTimestamp = new Date().toISOString();
-        const values = [[entryTimestamp, name, email]];
-        
-        const response = await gapi.client.sheets.spreadsheets.values.append({
-            spreadsheetId: SPREADSHEET_ID,
-            range: 'Sheet1!A:C',
-            valueInputOption: 'USER_ENTERED',
-            insertDataOption: 'INSERT_ROWS',
-            resource: {
-                values: values
-            }
+        const response = await fetch('/api/submit-waitlist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email
+            })
         });
         
-        console.log('✅ Entry added to Google Sheets successfully:', response.result);
-        return { success: true, data: response.result };
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to submit to database');
+        }
+        
+        const result = await response.json();
+        console.log('✅ Successfully added to Supabase:', result);
+        return result;
         
     } catch (error) {
-        console.error('❌ Google Sheets API Error:', error);
+        console.error('❌ Supabase API Error:', error);
         throw error;
     }
 }
@@ -179,21 +149,20 @@ async function handleFormSubmission() {
     console.log('📝 Form data:', { name, email });
     
     if (name && email) {
-        console.log('✅ Form validation passed, sending to Google Sheets...');
+        console.log('✅ Form validation passed, sending to Supabase...');
         
         try {
-            // Add to Google Sheets directly
-            const result = await addToGoogleSheets(name, email);
+            // Add to Supabase database
+            const result = await addToSupabase(name, email);
             
             if (result.success) {
-                console.log('✅ Entry added to Google Sheets successfully:', { name, email });
+                console.log('✅ Entry added to Supabase successfully:', { name, email });
             } else {
-                console.error('❌ Failed to add entry to Google Sheets');
+                console.error('❌ Failed to add entry to Supabase');
             }
         } catch (error) {
-            console.error('💥 Google Sheets API Error:', error);
+            console.error('💥 Supabase API Error:', error);
             console.error('💥 Error message:', error.message);
-            console.error('💥 Error details:', error.result?.error);
             
             // Show user-friendly error message
             alert('Sorry, there was an error submitting your information. Please check your internet connection and try again.');
@@ -269,12 +238,12 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('📧 Form event listeners skipped - email section is disabled');
     }
     
-    // Initialize Google API when page loads
-    console.log('🚀 Initializing Google API...');
-    initGoogleAPI().then(() => {
-        console.log('✅ Google API ready for use');
+    // Initialize Supabase API when page loads
+    console.log('🚀 Initializing Supabase API...');
+    initSupabaseAPI().then(() => {
+        console.log('✅ Supabase API ready for use');
     }).catch((error) => {
-        console.error('❌ Failed to initialize Google API:', error);
+        console.error('❌ Failed to initialize Supabase API:', error);
     });
 });
 
