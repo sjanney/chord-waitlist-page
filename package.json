@@ -4,7 +4,6 @@
   "description": "Chord waitlist page with Google Sheets integration",
   "scripts": {
     "dev": "vercel dev",
-    "build": "echo 'No build step required'",
     "test": "node test-local.js"
   },
   "dependencies": {

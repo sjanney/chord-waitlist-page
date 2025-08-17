@@ -29,7 +29,8 @@ function updateDate() {
 // Update date when page loads
 updateDate();
 
-// Google Sheets API Configuration - Replace with your actual values
+// Google Sheets API Configuration
+// You'll need to replace these with your actual values
 const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY_HERE'; // Replace with your actual API key
 const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE'; // Replace with your actual spreadsheet ID
 

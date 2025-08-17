@@ -81,13 +81,14 @@ vercel --prod
 npx vercel --prod
 ```
 
+The build process will automatically inject your environment variables into the JavaScript file during deployment.
+
 ## 🧪 **Step 7: Test Your Setup**
 
 1. **Visit your deployed site**
 2. **Open browser developer tools** (F12)
 3. **Check the console for these messages**:
-   - `🔧 Loading configuration from server...`
-   - `✅ Configuration loaded: { hasApiKey: true, hasSpreadsheetId: true }`
+   - `🚀 Initializing Google API...`
    - `✅ Google API ready for use`
 4. **Enter a name and email**
 5. **Press Enter**
@@ -95,9 +96,9 @@ npx vercel --prod
 
 ## 🔍 **Troubleshooting**
 
-### **"Configuration failed" error:**
-- Check that both environment variables are set in Vercel
-- Make sure they're set for all environments (Production, Preview, Development)
+### **"Google API key not configured" error:**
+- Check that `GOOGLE_API_KEY` environment variable is set in Vercel
+- Make sure it's set for all environments (Production, Preview, Development)
 
 ### **"API key not valid" error:**
 - Verify your API key is correct
@@ -117,8 +118,8 @@ npx vercel --prod
 - ✅ **API Key is restricted** to your domain only
 - ✅ **API Key is restricted** to Google Sheets API only
 - ✅ **Environment variables** are secure and not exposed in code
+- ✅ **Build-time injection** keeps secrets safe
 - ✅ **No hardcoded secrets** in your source code
-- ✅ **Easy to manage** different keys for different environments
 
 ## 📁 **File Structure**
 
@@ -126,9 +127,9 @@ npx vercel --prod
 chord-waitlist-page/
 ├── index.html              # Main page with Google API scripts
 ├── styles.css              # Styling
-├── script.js               # Frontend logic with secure config loading
-├── api/
-│   └── config.js           # Secure environment variable endpoint
+├── script.js               # Frontend logic (with placeholders)
+├── build.js                # Build script for environment variables
+├── package.json            # Package config with build script
 ├── vercel.json             # Vercel configuration
 ├── assets/
 │   └── background.jpg
@@ -137,10 +138,10 @@ chord-waitlist-page/
 
 ## 🎯 **How It Works**
 
-1. **Frontend loads** and calls `/api/config`
-2. **Server securely** reads environment variables
-3. **Configuration is returned** to frontend
-4. **Google API is initialized** with the secure key
+1. **Environment variables** are set in Vercel
+2. **Build script** (`build.js`) runs during deployment
+3. **Placeholders** in `script.js` are replaced with actual values
+4. **Frontend** uses the injected values to call Google Sheets API
 5. **Form submissions** go directly to Google Sheets
 6. **No secrets exposed** in client-side code
 
@@ -154,12 +155,12 @@ chord-waitlist-page/
 
 ## 🎉 **You're Done!**
 
-Your waitlist page now securely integrates with Google Sheets using environment variables. The API key and spreadsheet ID are kept secure on the server side and only exposed to your frontend when needed.
+Your waitlist page now securely integrates with Google Sheets using environment variables. The API key and spreadsheet ID are injected at build time and kept secure.
 
 ## 📞 **Need Help?**
 
 If you encounter any issues:
 1. Check the browser console for error messages
 2. Verify your environment variables are set correctly
-3. Test the `/api/config` endpoint directly
-4. Check your Google Cloud Console for API usage and errors
+3. Check your Google Cloud Console for API usage and errors
+4. Make sure your API key restrictions allow your domain
