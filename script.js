@@ -29,21 +29,73 @@ function updateDate() {
 // Update date when page loads
 updateDate();
 
-// Google Sheets API Configuration
-const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY'; // You'll need to get this from Google Cloud Console
-const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID'; // Your Google Sheet ID
+// Google Sheets API Configuration - Loaded securely from server
+let GOOGLE_API_KEY = null;
+let SPREADSHEET_ID = null;
+let googleApiInitialized = false;
+
+// Load configuration from server
+async function loadConfig() {
+    try {
+        console.log('🔧 Loading configuration from server...');
+        const response = await fetch('/api/config');
+        const config = await response.json();
+        
+        if (config.error) {
+            throw new Error(config.error);
+        }
+        
+        GOOGLE_API_KEY = config.googleApiKey;
+        SPREADSHEET_ID = config.spreadsheetId;
+        
+        console.log('✅ Configuration loaded:', {
+            hasApiKey: config.hasApiKey,
+            hasSpreadsheetId: config.hasSpreadsheetId
+        });
+        
+        return config;
+    } catch (error) {
+        console.error('❌ Failed to load configuration:', error);
+        throw error;
+    }
+}
 
 // Initialize Google API
 function initGoogleAPI() {
-    gapi.load('client', async () => {
+    return new Promise(async (resolve, reject) => {
         try {
-            await gapi.client.init({
-                apiKey: GOOGLE_API_KEY,
-                discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+            // Load configuration first
+            await loadConfig();
+            
+            // Check if API key is configured
+            if (!GOOGLE_API_KEY) {
+                const error = 'Google API key not configured. Please set GOOGLE_API_KEY environment variable.';
+                console.error('❌', error);
+                reject(new Error(error));
+                return;
+            }
+            
+            gapi.load('client', async () => {
+                try {
+                    await gapi.client.init({
+                        apiKey: GOOGLE_API_KEY,
+                        discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+                    });
+                    
+                    // Load the sheets API specifically
+                    await gapi.client.load('sheets', 'v4');
+                    
+                    googleApiInitialized = true;
+                    console.log('✅ Google API initialized successfully');
+                    console.log('✅ Google Sheets API loaded');
+                    resolve();
+                } catch (error) {
+                    console.error('❌ Failed to initialize Google API:', error);
+                    reject(error);
+                }
             });
-            console.log('✅ Google API initialized successfully');
         } catch (error) {
-            console.error('❌ Failed to initialize Google API:', error);
+            reject(error);
         }
     });
 }
@@ -51,6 +103,22 @@ function initGoogleAPI() {
 // Add entry to Google Sheets
 async function addToGoogleSheets(name, email) {
     try {
+        // Check if spreadsheet ID is configured
+        if (!SPREADSHEET_ID) {
+            throw new Error('Spreadsheet ID not configured. Please set SPREADSHEET_ID environment variable.');
+        }
+        
+        // Check if API is initialized
+        if (!googleApiInitialized) {
+            console.log('🔄 Google API not initialized, initializing now...');
+            await initGoogleAPI();
+        }
+        
+        // Double-check that sheets API is available
+        if (!gapi.client.sheets) {
+            throw new Error('Google Sheets API not available. Please check your API key and try again.');
+        }
+        
         console.log('🌐 Making direct Google Sheets API call...');
         
         const entryTimestamp = new Date().toISOString();
@@ -105,6 +173,10 @@ async function handleFormSubmission() {
             console.error('💥 Google Sheets API Error:', error);
             console.error('💥 Error message:', error.message);
             console.error('💥 Error details:', error.result?.error);
+            
+            // Show user-friendly error message
+            alert('Sorry, there was an error submitting your information. Please check your internet connection and try again.');
+            return; // Don't proceed with UI transition if there's an error
         }
         
         console.log('🎭 Starting UI transition...');
@@ -169,7 +241,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Initialize Google API when page loads
-    initGoogleAPI();
+    console.log('🚀 Initializing Google API...');
+    initGoogleAPI().then(() => {
+        console.log('✅ Google API ready for use');
+    }).catch((error) => {
+        console.error('❌ Failed to initialize Google API:', error);
+    });
 });
 
 // Typing Animation with Multiple Phrases
