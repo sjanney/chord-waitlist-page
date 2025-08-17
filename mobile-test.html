@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#ff0004">
+    <title>Mobile Test - Chord Waitlist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #ff0004;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .device-preview {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .device-frame {
+            border: 2px solid #ff0004;
+            border-radius: 10px;
+            padding: 10px;
+            background: #000;
+            text-align: center;
+        }
+        .device-frame h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+        }
+        .device-screen {
+            width: 200px;
+            height: 300px;
+            background: #1a1a1a;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .device-screen.large {
+            width: 300px;
+            height: 400px;
+        }
+        .device-screen.small {
+            width: 150px;
+            height: 250px;
+        }
+        .device-screen.tiny {
+            width: 100px;
+            height: 180px;
+        }
+        .mock-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 8px;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        .mock-time {
+            position: absolute;
+            top: 5px;
+            right: -10px;
+            font-size: 10px;
+            transform: rotate(90deg);
+            transform-origin: center;
+        }
+        .mock-logo {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 20px;
+        }
+        .mock-text {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 6px;
+            line-height: 1.2;
+        }
+        .mock-email {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 8px;
+        }
+        .responsive-info {
+            background: rgba(255, 0, 4, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .breakpoint {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .breakpoint h4 {
+            margin: 0 0 5px 0;
+            color: #ff0004;
+        }
+        .feature-list {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .feature-list ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .feature-list li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>📱 Mobile Responsive Design Test</h1>
+        
+        <div class="responsive-info">
+            <h3>🎯 Responsive Breakpoints</h3>
+            <p>Your Chord waitlist page is now fully responsive across all devices!</p>
+        </div>
+
+        <div class="device-preview">
+            <div class="device-frame">
+                <h3>Desktop (768px+)</h3>
+                <div class="device-screen large">
+                    <div class="mock-content">
+                        <div class="mock-time">12:34:56 PM</div>
+                        <div class="mock-logo">chord</div>
+                        <div class="mock-text">08.16.25 - coding and creating<br>05.28.25 - outlined processes</div>
+                        <div class="mock-email">enter your info<br>your name here<br>your email here</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="device-frame">
+                <h3>Tablet (768px)</h3>
+                <div class="device-screen">
+                    <div class="mock-content">
+                        <div class="mock-time">12:34:56</div>
+                        <div class="mock-logo">chord</div>
+                        <div class="mock-text">08.16.25 - coding<br>05.28.25 - processes</div>
+                        <div class="mock-email">enter your info<br>name<br>email</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="device-frame">
+                <h3>Mobile (480px)</h3>
+                <div class="device-screen small">
+                    <div class="mock-content">
+                        <div class="mock-time">12:34</div>
+                        <div class="mock-logo">chord</div>
+                        <div class="mock-text">08.16.25<br>05.28.25</div>
+                        <div class="mock-email">enter info<br>name<br>email</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="device-frame">
+                <h3>Small Mobile (360px)</h3>
+                <div class="device-screen tiny">
+                    <div class="mock-content">
+                        <div class="mock-time">12:34</div>
+                        <div class="mock-logo">chord</div>
+                        <div class="mock-text">08.16.25</div>
+                        <div class="mock-email">enter info<br>name<br>email</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="breakpoint">
+            <h4>📱 Mobile Optimizations (768px and below)</h4>
+            <ul>
+                <li>Responsive typography that scales properly</li>
+                <li>Optimized spacing and positioning</li>
+                <li>Touch-friendly input fields (16px font prevents zoom)</li>
+                <li>Proper viewport handling</li>
+                <li>Landscape orientation support</li>
+            </ul>
+        </div>
+
+        <div class="breakpoint">
+            <h4>📱 Small Mobile (480px and below)</h4>
+            <ul>
+                <li>Further reduced font sizes</li>
+                <li>Compact layout for small screens</li>
+                <li>Optimized logo and text positioning</li>
+                <li>Maintained readability</li>
+            </ul>
+        </div>
+
+        <div class="breakpoint">
+            <h4>📱 Extra Small (360px and below)</h4>
+            <ul>
+                <li>Minimal layout for very small screens</li>
+                <li>Essential content only</li>
+                <li>Maximum space utilization</li>
+            </ul>
+        </div>
+
+        <div class="feature-list">
+            <h3>✨ Mobile Features</h3>
+            <ul>
+                <li><strong>No Zoom on Input Focus:</strong> 16px font size prevents iOS zoom</li>
+                <li><strong>Touch Optimized:</strong> Proper spacing for touch interactions</li>
+                <li><strong>High DPI Support:</strong> Crisp rendering on Retina displays</li>
+                <li><strong>Landscape Mode:</strong> Optimized for horizontal orientation</li>
+                <li><strong>PWA Ready:</strong> Meta tags for app-like experience</li>
+                <li><strong>Print Friendly:</strong> Clean print styles</li>
+                <li><strong>Accessibility:</strong> Proper contrast and text sizing</li>
+            </ul>
+        </div>
+
+        <div class="responsive-info">
+            <h3>🧪 Test Your Site</h3>
+            <p>Visit <a href="/" style="color: #ff0004;">http://localhost:3000</a> and try:</p>
+            <ul>
+                <li>Resize your browser window</li>
+                <li>Use browser dev tools to simulate mobile devices</li>
+                <li>Test on actual mobile devices</li>
+                <li>Try landscape and portrait orientations</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

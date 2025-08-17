@@ -1,5 +1,5 @@
 // Email Section Visibility Control
-const SHOW_EMAIL_SECTION = true; // Set to false to hide the email section completely
+const SHOW_EMAIL_SECTION = false; // Set to false to hide the email section completely
 
 // Military Time Display
 function updateTime() {
