@@ -29,6 +29,52 @@ function updateDate() {
 // Update date when page loads
 updateDate();
 
+// Google Sheets API Configuration
+const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY'; // You'll need to get this from Google Cloud Console
+const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID'; // Your Google Sheet ID
+
+// Initialize Google API
+function initGoogleAPI() {
+    gapi.load('client', async () => {
+        try {
+            await gapi.client.init({
+                apiKey: GOOGLE_API_KEY,
+                discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+            });
+            console.log('✅ Google API initialized successfully');
+        } catch (error) {
+            console.error('❌ Failed to initialize Google API:', error);
+        }
+    });
+}
+
+// Add entry to Google Sheets
+async function addToGoogleSheets(name, email) {
+    try {
+        console.log('🌐 Making direct Google Sheets API call...');
+        
+        const entryTimestamp = new Date().toISOString();
+        const values = [[entryTimestamp, name, email]];
+        
+        const response = await gapi.client.sheets.spreadsheets.values.append({
+            spreadsheetId: SPREADSHEET_ID,
+            range: 'Sheet1!A:C',
+            valueInputOption: 'USER_ENTERED',
+            insertDataOption: 'INSERT_ROWS',
+            resource: {
+                values: values
+            }
+        });
+        
+        console.log('✅ Entry added to Google Sheets successfully:', response.result);
+        return { success: true, data: response.result };
+        
+    } catch (error) {
+        console.error('❌ Google Sheets API Error:', error);
+        throw error;
+    }
+}
+
 // Email Form Handling
 async function handleFormSubmission() {
     console.log('🚀 Form submission started');
@@ -44,36 +90,21 @@ async function handleFormSubmission() {
     console.log('📝 Form data:', { name, email });
     
     if (name && email) {
-        console.log('✅ Form validation passed, sending to API...');
+        console.log('✅ Form validation passed, sending to Google Sheets...');
         
         try {
-            console.log('🌐 Making API request to /api/add-waitlist-entry...');
-            
-            // Send data to Google Sheets via our server
-            const response = await fetch('/api/add-waitlist-entry', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email })
-            });
-            
-            console.log('📡 API Response status:', response.status);
-            console.log('📡 API Response headers:', response.headers);
-            
-            const result = await response.json();
-            console.log('📡 API Response body:', result);
+            // Add to Google Sheets directly
+            const result = await addToGoogleSheets(name, email);
             
             if (result.success) {
                 console.log('✅ Entry added to Google Sheets successfully:', { name, email });
             } else {
-                console.error('❌ Failed to add entry:', result.error);
-                console.error('❌ Error details:', result.details);
+                console.error('❌ Failed to add entry to Google Sheets');
             }
         } catch (error) {
-            console.error('💥 Network/API Error:', error);
+            console.error('💥 Google Sheets API Error:', error);
             console.error('💥 Error message:', error.message);
-            console.error('💥 Error stack:', error.stack);
+            console.error('💥 Error details:', error.result?.error);
         }
         
         console.log('🎭 Starting UI transition...');
@@ -136,6 +167,9 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.opacity = '0.8';
         }
     });
+    
+    // Initialize Google API when page loads
+    initGoogleAPI();
 });
 
 // Typing Animation with Multiple Phrases

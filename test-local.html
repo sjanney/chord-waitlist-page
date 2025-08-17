@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chord - Waitlist (Local Test)</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google API Client Library -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="assets/logo.png" alt="Chord Logo">
+        </div>
+        
+        <h1>chord</h1>
+        
+        <div class="date"></div>
+        <div class="time-display" id="time-display"></div>
+        
+        <div class="typing-text" id="typing-text"></div>
+        
+        <div id="email-section" class="email-section">
+            <p>enter your info</p>
+            <div class="input-group">
+                <input type="text" id="name-input" placeholder="name" autocomplete="off">
+                <input type="email" id="email-input" placeholder="email" autocomplete="off">
+            </div>
+        </div>
+        
+        <div id="goodbye-message" class="goodbye-message">
+            <p>see you soon</p>
+        </div>
+    </div>
+
+    <script>
+        // Military Time Display
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const timeString = `${hours} : ${minutes} : ${seconds} ${hours >= 12 ? 'PM' : 'AM'}`;
+            
+            const timeDisplay = document.getElementById('time-display');
+            timeDisplay.textContent = timeString;
+        }
+
+        // Update time every second
+        setInterval(updateTime, 1000);
+        updateTime(); // Initial call
+
+        // Current Date Display
+        function updateDate() {
+            const now = new Date();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const day = now.getDate().toString().padStart(2, '0');
+            const year = now.getFullYear().toString().slice(-2);
+            const dateString = `${month}.${day}.${year}`;
+            
+            const dateElement = document.querySelector('.date');
+            dateElement.textContent = `${dateString} - `;
+        }
+
+        // Update date when page loads
+        updateDate();
+
+        // Google Sheets API Configuration
+        const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY'; // Replace with your actual API key
+        const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID'; // Replace with your actual spreadsheet ID
+
+        // Initialize Google API
+        function initGoogleAPI() {
+            gapi.load('client', async () => {
+                try {
+                    await gapi.client.init({
+                        apiKey: GOOGLE_API_KEY,
+                        discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+                    });
+                    console.log('✅ Google API initialized successfully');
+                } catch (error) {
+                    console.error('❌ Failed to initialize Google API:', error);
+                }
+            });
+        }
+
+        // Add entry to Google Sheets
+        async function addToGoogleSheets(name, email) {
+            try {
+                console.log('🌐 Making direct Google Sheets API call...');
+                
+                const entryTimestamp = new Date().toISOString();
+                const values = [[entryTimestamp, name, email]];
+                
+                const response = await gapi.client.sheets.spreadsheets.values.append({
+                    spreadsheetId: SPREADSHEET_ID,
+                    range: 'Sheet1!A:C',
+                    valueInputOption: 'USER_ENTERED',
+                    insertDataOption: 'INSERT_ROWS',
+                    resource: {
+                        values: values
+                    }
+                });
+                
+                console.log('✅ Entry added to Google Sheets successfully:', response.result);
+                return { success: true, data: response.result };
+                
+            } catch (error) {
+                console.error('❌ Google Sheets API Error:', error);
+                throw error;
+            }
+        }
+
+        // Email Form Handling
+        async function handleFormSubmission() {
+            console.log('🚀 Form submission started');
+            
+            const nameInput = document.getElementById('name-input');
+            const emailInput = document.getElementById('email-input');
+            const emailSection = document.getElementById('email-section');
+            const goodbyeMessage = document.getElementById('goodbye-message');
+            
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            
+            console.log('📝 Form data:', { name, email });
+            
+            if (name && email) {
+                console.log('✅ Form validation passed, sending to Google Sheets...');
+                
+                try {
+                    // Add to Google Sheets directly
+                    const result = await addToGoogleSheets(name, email);
+                    
+                    if (result.success) {
+                        console.log('✅ Entry added to Google Sheets successfully:', { name, email });
+                    } else {
+                        console.error('❌ Failed to add entry to Google Sheets');
+                    }
+                } catch (error) {
+                    console.error('💥 Google Sheets API Error:', error);
+                    console.error('💥 Error message:', error.message);
+                    console.error('💥 Error details:', error.result?.error);
+                }
+                
+                console.log('🎭 Starting UI transition...');
+                
+                // Hide the email section with a fade effect
+                emailSection.style.transition = 'opacity 0.5s ease-out';
+                emailSection.style.opacity = '0';
+                
+                setTimeout(() => {
+                    emailSection.style.display = 'none';
+                    
+                    // Show the goodbye message
+                    goodbyeMessage.style.opacity = '1';
+                    console.log('✅ UI transition completed');
+                }, 500);
+                
+                // Clear the inputs
+                nameInput.value = '';
+                emailInput.value = '';
+            } else {
+                console.log('❌ Form validation failed - missing name or email');
+            }
+        }
+
+        // Add event listeners for form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('name-input');
+            const emailInput = document.getElementById('email-input');
+            
+            // Handle Enter key press on either input
+            nameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    emailInput.focus();
+                }
+            });
+            
+            emailInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleFormSubmission();
+                }
+            });
+            
+            // Handle input focus for better UX
+            nameInput.addEventListener('focus', function() {
+                this.style.opacity = '1';
+            });
+            
+            nameInput.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.style.opacity = '0.8';
+                }
+            });
+            
+            emailInput.addEventListener('focus', function() {
+                this.style.opacity = '1';
+            });
+            
+            emailInput.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.style.opacity = '0.8';
+                }
+            });
+            
+            // Initialize Google API when page loads
+            initGoogleAPI();
+        });
+
+        // Typing Animation with Multiple Phrases
+        class TypeWriter {
+            constructor(element, phrases, speed = 50) {
+                this.element = element;
+                this.phrases = phrases;
+                this.currentPhraseIndex = 0;
+                this.speed = speed;
+                this.currentIndex = 0;
+                this.isTyping = false;
+                this.isDeleting = false;
+            }
+
+            start() {
+                if (this.isTyping) return;
+                this.isTyping = true;
+                this.type();
+            }
+
+            type() {
+                if (this.isDeleting) {
+                    this.delete();
+                    return;
+                }
+
+                if (this.currentIndex < this.phrases[this.currentPhraseIndex].length) {
+                    this.element.textContent += this.phrases[this.currentPhraseIndex].charAt(this.currentIndex);
+                    this.currentIndex++;
+                    setTimeout(() => this.type(), this.speed);
+                } else {
+                    // Wait before starting to delete
+                    setTimeout(() => {
+                        this.isDeleting = true;
+                        this.delete();
+                    }, 2000);
+                }
+            }
+
+            delete() {
+                if (this.element.textContent.length > 0) {
+                    this.element.textContent = this.element.textContent.slice(0, -1);
+                    setTimeout(() => this.delete(), this.speed / 2);
+                } else {
+                    this.isDeleting = false;
+                    this.currentIndex = 0;
+                    this.currentPhraseIndex = (this.currentPhraseIndex + 1) % this.phrases.length;
+                    setTimeout(() => this.type(), 500);
+                }
+            }
+
+            reset() {
+                this.element.textContent = '';
+                this.currentIndex = 0;
+                this.currentPhraseIndex = 0;
+                this.isTyping = false;
+                this.isDeleting = false;
+            }
+        }
+
+        // Initialize typing animation with multiple phrases
+        const typingElement = document.getElementById('typing-text');
+        const phrases = [
+            "coding and creating",
+            "building the future",
+            "designing solutions",
+            "crafting experiences",
+            "innovating daily"
+        ];
+        const typeWriter = new TypeWriter(typingElement, phrases, 30);
+
+        // Start typing animation when page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                typeWriter.start();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
