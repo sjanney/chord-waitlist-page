@@ -29,74 +29,42 @@ function updateDate() {
 // Update date when page loads
 updateDate();
 
-// Google Sheets API Configuration - Loaded securely from server
-let GOOGLE_API_KEY = null;
-let SPREADSHEET_ID = null;
-let googleApiInitialized = false;
+// Google Sheets API Configuration - Replace with your actual values
+const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY_HERE'; // Replace with your actual API key
+const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE'; // Replace with your actual spreadsheet ID
 
-// Load configuration from server
-async function loadConfig() {
-    try {
-        console.log('🔧 Loading configuration from server...');
-        const response = await fetch('/api/config');
-        const config = await response.json();
-        
-        if (config.error) {
-            throw new Error(config.error);
-        }
-        
-        GOOGLE_API_KEY = config.googleApiKey;
-        SPREADSHEET_ID = config.spreadsheetId;
-        
-        console.log('✅ Configuration loaded:', {
-            hasApiKey: config.hasApiKey,
-            hasSpreadsheetId: config.hasSpreadsheetId
-        });
-        
-        return config;
-    } catch (error) {
-        console.error('❌ Failed to load configuration:', error);
-        throw error;
-    }
-}
+let googleApiInitialized = false;
 
 // Initialize Google API
 function initGoogleAPI() {
-    return new Promise(async (resolve, reject) => {
-        try {
-            // Load configuration first
-            await loadConfig();
-            
-            // Check if API key is configured
-            if (!GOOGLE_API_KEY) {
-                const error = 'Google API key not configured. Please set GOOGLE_API_KEY environment variable.';
-                console.error('❌', error);
-                reject(new Error(error));
-                return;
-            }
-            
-            gapi.load('client', async () => {
-                try {
-                    await gapi.client.init({
-                        apiKey: GOOGLE_API_KEY,
-                        discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-                    });
-                    
-                    // Load the sheets API specifically
-                    await gapi.client.load('sheets', 'v4');
-                    
-                    googleApiInitialized = true;
-                    console.log('✅ Google API initialized successfully');
-                    console.log('✅ Google Sheets API loaded');
-                    resolve();
-                } catch (error) {
-                    console.error('❌ Failed to initialize Google API:', error);
-                    reject(error);
-                }
-            });
-        } catch (error) {
-            reject(error);
+    return new Promise((resolve, reject) => {
+        // Check if API key is configured
+        if (GOOGLE_API_KEY === 'YOUR_GOOGLE_API_KEY_HERE') {
+            const error = 'Google API key not configured. Please update the GOOGLE_API_KEY constant in script.js';
+            console.error('❌', error);
+            reject(new Error(error));
+            return;
         }
+        
+        gapi.load('client', async () => {
+            try {
+                await gapi.client.init({
+                    apiKey: GOOGLE_API_KEY,
+                    discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+                });
+                
+                // Load the sheets API specifically
+                await gapi.client.load('sheets', 'v4');
+                
+                googleApiInitialized = true;
+                console.log('✅ Google API initialized successfully');
+                console.log('✅ Google Sheets API loaded');
+                resolve();
+            } catch (error) {
+                console.error('❌ Failed to initialize Google API:', error);
+                reject(error);
+            }
+        });
     });
 }
 
@@ -104,8 +72,8 @@ function initGoogleAPI() {
 async function addToGoogleSheets(name, email) {
     try {
         // Check if spreadsheet ID is configured
-        if (!SPREADSHEET_ID) {
-            throw new Error('Spreadsheet ID not configured. Please set SPREADSHEET_ID environment variable.');
+        if (SPREADSHEET_ID === 'YOUR_SPREADSHEET_ID_HERE') {
+            throw new Error('Spreadsheet ID not configured. Please update the SPREADSHEET_ID constant in script.js');
         }
         
         // Check if API is initialized
