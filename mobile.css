@@ -69,10 +69,10 @@
     cursor: text;
     user-select: text;
     position: relative;
-    z-index: 10;
+    z-index: 30;
     transition: all 0.3s ease;
     /* Better touch interaction */
-    touch-action: manipulation;
+    touch-action: auto;
 }
 
 .text-input::placeholder {

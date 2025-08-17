@@ -202,6 +202,29 @@ document.addEventListener('DOMContentLoaded', function() {
         const emailInput = document.getElementById('email-input');
         const submitButton = document.getElementById('submit-button');
         
+        // Debug: Check if inputs are properly initialized
+        console.log('🔍 Input elements found:', {
+            nameInput: !!nameInput,
+            emailInput: !!emailInput,
+            submitButton: !!submitButton
+        });
+        
+        if (nameInput) {
+            console.log('🔍 Name input properties:', {
+                disabled: nameInput.disabled,
+                readonly: nameInput.readOnly,
+                type: nameInput.type,
+                value: nameInput.value
+            });
+            
+            // Test: Try to focus the input programmatically
+            setTimeout(() => {
+                console.log('🎯 Attempting to focus name input...');
+                nameInput.focus();
+                console.log('🎯 Focus attempt completed');
+            }, 1000);
+        }
+        
         // Handle Enter key press on either input
         nameInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -222,7 +245,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Handle input focus for better UX
         nameInput.addEventListener('focus', function() {
+            console.log('🎯 Name input focused');
             this.style.opacity = '1';
+        });
+        
+        nameInput.addEventListener('click', function() {
+            console.log('🖱️ Name input clicked');
         });
         
         nameInput.addEventListener('blur', function() {

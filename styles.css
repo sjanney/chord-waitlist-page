@@ -1,5 +1,5 @@
 /* Import mobile-specific styles */
-@import url('mobile.css');
+/* @import url('mobile.css'); */
 
 :root {
     /* Safari viewport height fix */
@@ -223,6 +223,132 @@ body {
     .text-content {
         font-size: 12px;
         line-height: 1.6;
+    }
+
+    /* Mobile Email Section */
+    .email-section {
+        position: fixed;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        z-index: 25;
+        width: 90%;
+        max-width: 320px;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        backdrop-filter: none;
+        border: none;
+        box-shadow: none;
+    }
+
+    .email-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        width: 100%;
+    }
+
+    .main-text {
+        font-family: 'Product Sans';
+        font-size: 16px;
+        color: #ff0004;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .text-input {
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        outline: none;
+        font-family: 'Product Sans', 'Arial', sans-serif;
+        font-size: 16px;
+        color: #ff0004;
+        text-align: center;
+        width: 100%;
+        max-width: 280px;
+        padding: 12px 15px;
+        margin: 0;
+        cursor: text;
+        user-select: text;
+        position: relative;
+        z-index: 30;
+        transition: all 0.3s ease;
+        touch-action: auto;
+    }
+
+    .text-input::placeholder {
+        color: rgba(255, 0, 4, 0.6);
+        font-weight: normal;
+    }
+
+    .text-input:focus {
+        outline: none;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .submit-button {
+        background: transparent;
+        border: none;
+        outline: none;
+        font-family: 'Product Sans', 'Arial', sans-serif;
+        font-size: 16px;
+        color: #ff0004;
+        text-align: center;
+        padding: 12px 15px;
+        margin: 0;
+        cursor: pointer;
+        user-select: none;
+        position: relative;
+        z-index: 10;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: bold;
+    }
+
+    .submit-button:hover {
+        color: rgba(255, 0, 4, 0.8);
+    }
+
+    .submit-button:focus {
+        outline: none;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .goodbye-message {
+        position: fixed;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Product Sans', 'Arial', sans-serif;
+        font-size: 18px;
+        color: #ff0004;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.5s ease-in;
+        z-index: 25;
+        width: 90%;
+        max-width: 320px;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        backdrop-filter: none;
+        border: none;
+        box-shadow: none;
     }
 
     .email-section {
