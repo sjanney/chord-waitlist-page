@@ -1,0 +1,154 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Product Sans', 'Arial', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('./assets/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.time-display {
+    position: absolute;
+    top: 100px;
+    right: -50px;
+    font-size:24px;
+    color: #fc0000;
+    font-weight: bold;
+    transform: rotate(90deg);
+    transform-origin: center;
+    white-space: nowrap;
+}
+
+.chord-logo {
+    position: absolute;
+    bottom: 0px;
+    right: 50px;
+    display: flex;
+    align-items: baseline;
+    gap: 05px;
+}
+
+.logo-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.chord-text {
+    font-size: 168px;
+    color: #EDD4D5;
+    font-weight: bold;
+    text-transform: lowercase;
+    margin: 0;
+}
+
+.left-text {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    max-width: 400px;
+}
+
+.text-content {
+    font-family: 'Product Sans', 'Arial', sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #ff0004;
+    font-weight: bold;
+    text-align: left;
+}
+
+.email-section {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 10;
+}
+
+.email-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.main-text {
+    font-family: 'Product Sans', 'Arial', sans-serif;
+    font-size: 18px;
+    color: #ff0004;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.text-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Product Sans', 'Arial', sans-serif;
+    font-size: 13px;
+    color: #ff0004;
+    text-align: center;
+    width: 200px;
+    padding: 0;
+    margin: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: text;
+    user-select: text;
+    position: relative;
+    z-index: 10;
+}
+
+.text-input::placeholder {
+    color: #ff0004;
+    opacity: 0.8;
+}
+
+.text-input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+.input-line {
+    width: 84px;
+    height: 1px;
+    background-color: #ff0004;
+    margin-top: -2px;
+}
+
+.goodbye-message {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Product Sans', 'Arial', sans-serif;
+    font-size: 14px;
+    color: #ff0004;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+}

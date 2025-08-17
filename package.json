@@ -1,0 +1,15 @@
+{
+  "name": "chord-waitlist",
+  "version": "1.0.0",
+  "description": "Chord waitlist page with Google Sheets integration",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step required'"
+  },
+  "dependencies": {
+    "googleapis": "^128.0.0"
+  },
+  "keywords": ["waitlist", "google-sheets", "api", "vercel"],
+  "author": "Your Name",
+  "license": "MIT"
+}
