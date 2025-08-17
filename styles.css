@@ -1,3 +1,6 @@
+/* Import mobile-specific styles */
+@import url('mobile.css');
+
 :root {
     /* Safari viewport height fix */
     --vh: 1vh;
@@ -93,7 +96,7 @@ body {
     right: calc(0px - env(safe-area-inset-right));
 }
 
-/* Mobile-First Time Display */
+/* Base Time Display */
 .time-display {
     position: fixed;
     top: 20px;
@@ -113,7 +116,7 @@ body {
     white-space: nowrap;
 }
 
-/* Mobile-First Logo */
+/* Base Logo */
 .chord-logo {
     position: fixed;
     bottom: 20px;
@@ -143,7 +146,7 @@ body {
     margin: 0;
 }
 
-/* Mobile-First Left Text */
+/* Base Left Text */
 .left-text {
     position: fixed;
     top: 20px;
@@ -166,183 +169,6 @@ body {
     color: #ff0004;
     font-weight: bold;
     text-align: left;
-}
-
-/* Mobile-First Email Section */
-.email-section {
-    position: fixed;
-    top: 35%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    z-index: 25;
-    width: 90%;
-    max-width: 320px;
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    backdrop-filter: none;
-    border: none;
-    box-shadow: none;
-}
-
-.email-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    width: 100%;
-}
-
-.main-text {
-    font-family: 'Product Sans';
-    font-size: 1px;
-    color: #ff0004;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.text-input {
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    outline: none;
-    font-family: 'Product Sans', 'Arial', sans-serif;
-    font-size: 16px; /* Prevents Safari zoom */
-    color: #ff0004;
-    text-align: center;
-    width: 100%;
-    max-width: 280px;
-    padding: 12px 15px;
-    margin: 0;
-    /* Safari mobile input optimizations */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    -webkit-border-radius: 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    -webkit-tap-highlight-color: transparent;
-    /* Prevent zoom on focus */
-    -webkit-text-size-adjust: 100%;
-    /* Smooth text rendering */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    cursor: text;
-    user-select: text;
-    position: relative;
-    z-index: 10;
-    transition: all 0.3s ease;
-    /* Better touch interaction */
-    touch-action: manipulation;
-}
-
-.text-input::placeholder {
-    color: rgba(255, 0, 4, 0.6);
-    font-weight: normal;
-}
-
-.text-input:focus {
-    outline: none;
-    border: none;
-    background: transparent;
-    box-shadow: none;
-}
-
-/* Remove the old input lines */
-.input-line {
-    display: none;
-}
-
-/* Mobile-First Goodbye Message */
-.goodbye-message {
-    position: fixed;
-    top: 35%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Product Sans', 'Arial', sans-serif;
-    font-size: 18px;
-    color: #ff0004;
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.5s ease-in;
-    z-index: 25;
-    width: 90%;
-    max-width: 320px;
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    backdrop-filter: none;
-    border: none;
-    box-shadow: none;
-}
-
-/* Additional mobile optimizations for very small screens */
-@media screen and (max-width: 360px) {
-    .main-text {
-        font-size: 14px;
-        margin-bottom: 3px;
-    }
-    
-    .email-section {
-        gap: 12px;
-    }
-    
-    .email-container {
-        gap: 12px;
-    }
-    
-    .text-input {
-        padding: 10px 12px;
-        font-size: 16px; /* Keep 16px to prevent zoom */
-    }
-}
-
-/* Safari iOS specific optimizations */
-@supports (-webkit-touch-callout: none) {
-    body {
-        /* Better viewport handling on iOS */
-        min-height: -webkit-fill-available;
-    }
-    
-    .background-image {
-        /* Fix for iOS viewport units */
-        min-height: -webkit-fill-available;
-    }
-    
-    .text-input {
-        /* iOS specific input optimizations */
-        -webkit-user-select: text;
-        -webkit-touch-callout: default;
-    }
-}
-
-/* iPhone X and newer safe area handling */
-@media screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3),
-       screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2),
-       screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3),
-       screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3),
-       screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) {
-    
-    .time-display {
-        top: calc(20px + env(safe-area-inset-top));
-    }
-    
-    .left-text {
-        top: calc(20px + env(safe-area-inset-top));
-    }
-    
-    .email-section {
-        /* Adjust for safe areas */
-        top: 50%;
-        transform: translate(-50%, -50%);
-    }
 }
 
 /* Desktop Styles (768px and up) */
@@ -492,168 +318,6 @@ body {
     .text-content {
         font-size: 12px;
     }
-
-    .email-section {
-        gap: 20px;
-        padding: 25px 20px;
-    }
-
-    .main-text {
-        font-size: 18px;
-    }
-
-    .text-input {
-        padding: 12px 18px;
-    }
-}
-
-/* Small Mobile Devices (480px and below) */
-@media screen and (max-width: 480px) {
-    .time-display {
-        top: 15px;
-        right: 15px;
-        font-size: 14px;
-        padding: 6px 10px;
-    }
-
-    .chord-logo {
-        bottom: 15px;
-        right: 15px;
-        padding: 8px 12px;
-    }
-
-    .logo-image {
-        width: 35px;
-        height: 35px;
-    }
-
-    .chord-text {
-        font-size: 28px;
-    }
-
-    .left-text {
-        top: 15px;
-        left: 15px;
-        max-width: 250px;
-        padding: 12px;
-    }
-
-    .text-content {
-        font-size: 10px;
-        line-height: 1.4;
-    }
-
-    .email-section {
-        gap: 20px;
-        padding: 25px 15px;
-    }
-
-    .main-text {
-        font-size: 18px;
-    }
-
-    .text-input {
-        padding: 12px 15px;
-        font-size: 16px;
-    }
-}
-
-/* Extra Small Mobile Devices (360px and below) */
-@media screen and (max-width: 360px) {
-    .time-display {
-        top: 10px;
-        right: 10px;
-        font-size: 12px;
-        padding: 5px 8px;
-    }
-
-    .chord-logo {
-        bottom: 10px;
-        right: 10px;
-        padding: 6px 10px;
-    }
-
-    .logo-image {
-        width: 30px;
-        height: 30px;
-    }
-
-    .chord-text {
-        font-size: 24px;
-    }
-
-    .left-text {
-        top: 10px;
-        left: 10px;
-        max-width: 200px;
-        padding: 10px;
-    }
-
-    .text-content {
-        font-size: 9px;
-    }
-
-    .email-section {
-        gap: 15px;
-        padding: 20px 12px;
-    }
-
-    .main-text {
-        font-size: 16px;
-    }
-
-    .text-input {
-        padding: 10px 12px;
-    }
-}
-
-/* Landscape Mobile */
-@media screen and (max-height: 500px) and (orientation: landscape) {
-    .time-display {
-        top: 10px;
-        right: 15px;
-        font-size: 14px;
-    }
-
-    .chord-logo {
-        bottom: 10px;
-        right: 15px;
-    }
-
-    .logo-image {
-        width: 30px;
-        height: 30px;
-    }
-
-    .chord-text {
-        font-size: 24px;
-    }
-
-    .left-text {
-        top: 10px;
-        left: 15px;
-        max-width: 200px;
-    }
-
-    .text-content {
-        font-size: 9px;
-        line-height: 1.3;
-    }
-
-    .email-section {
-        gap: 15px;
-        padding: 20px 15px;
-    }
-
-    .main-text {
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
-
-    .text-input {
-        padding: 10px 15px;
-        font-size: 14px;
-    }
 }
 
 /* High DPI Displays */
@@ -667,14 +331,6 @@ body {
 @media (hover: none) and (pointer: coarse) {
     .text-input {
         font-size: 16px;
-    }
-    
-    .email-section {
-        gap: 30px;
-    }
-    
-    .email-container {
-        gap: 25px;
     }
 }
 

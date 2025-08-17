@@ -1,0 +1,232 @@
+/* Mobile-First Styles for Chord Waitlist Page */
+
+/* Mobile-First Email Section */
+.email-section {
+    position: fixed;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    z-index: 25;
+    width: 90%;
+    max-width: 320px;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+}
+
+.email-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+}
+
+.main-text {
+    font-family: 'Product Sans';
+    font-size: 1px;
+    color: #ff0004;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.text-input {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    font-family: 'Product Sans', 'Arial', sans-serif;
+    font-size: 16px; /* Prevents Safari zoom */
+    color: #ff0004;
+    text-align: center;
+    width: 100%;
+    max-width: 280px;
+    padding: 12px 15px;
+    margin: 0;
+    /* Safari mobile input optimizations */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-tap-highlight-color: transparent;
+    /* Prevent zoom on focus */
+    -webkit-text-size-adjust: 100%;
+    /* Smooth text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    cursor: text;
+    user-select: text;
+    position: relative;
+    z-index: 10;
+    transition: all 0.3s ease;
+    /* Better touch interaction */
+    touch-action: manipulation;
+}
+
+.text-input::placeholder {
+    color: rgba(255, 0, 4, 0.6);
+    font-weight: normal;
+}
+
+.text-input:focus {
+    outline: none;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* Remove the old input lines */
+.input-line {
+    display: none;
+}
+
+/* Mobile-First Goodbye Message */
+.goodbye-message {
+    position: fixed;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Product Sans', 'Arial', sans-serif;
+    font-size: 18px;
+    color: #ff0004;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+    z-index: 25;
+    width: 90%;
+    max-width: 320px;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+}
+
+/* Additional mobile optimizations for very small screens */
+@media screen and (max-width: 360px) {
+    .main-text {
+        font-size: 14px;
+        margin-bottom: 3px;
+    }
+    
+    .email-section {
+        gap: 12px;
+    }
+    
+    .email-container {
+        gap: 12px;
+    }
+    
+    .text-input {
+        padding: 10px 12px;
+        font-size: 16px; /* Keep 16px to prevent zoom */
+    }
+}
+
+/* Safari iOS specific optimizations */
+@supports (-webkit-touch-callout: none) {
+    body {
+        /* Better viewport handling on iOS */
+        min-height: -webkit-fill-available;
+    }
+    
+    .background-image {
+        /* Fix for iOS viewport units */
+        min-height: -webkit-fill-available;
+    }
+    
+    .text-input {
+        /* iOS specific input optimizations */
+        -webkit-user-select: text;
+        -webkit-touch-callout: default;
+    }
+}
+
+/* iPhone X and newer safe area handling */
+@media screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3),
+       screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2),
+       screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3),
+       screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3),
+       screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) {
+    
+    .time-display {
+        top: calc(20px + env(safe-area-inset-top));
+    }
+    
+    .left-text {
+        top: calc(20px + env(safe-area-inset-top));
+    }
+    
+    .email-section {
+        /* Adjust for safe areas */
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Mobile-specific styles for larger mobile screens */
+@media screen and (min-width: 481px) and (max-width: 767px) {
+    .email-section {
+        top: 40%;
+        max-width: 400px;
+    }
+    
+    .goodbye-message {
+        top: 40%;
+        max-width: 400px;
+    }
+    
+    .text-input {
+        max-width: 320px;
+        font-size: 18px;
+        padding: 15px 20px;
+    }
+    
+    .main-text {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+    
+    .email-container {
+        gap: 8px;
+    }
+}
+
+/* Mobile landscape orientation */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .email-section {
+        top: 30%;
+        gap: 10px;
+    }
+    
+    .goodbye-message {
+        top: 30%;
+    }
+    
+    .email-container {
+        gap: 8px;
+    }
+    
+    .text-input {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    
+    .main-text {
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+}
