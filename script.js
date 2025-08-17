@@ -1,3 +1,6 @@
+// Email Section Visibility Control
+const SHOW_EMAIL_SECTION = true; // Set to false to hide the email section completely
+
 // Military Time Display
 function updateTime() {
     const now = new Date();
@@ -28,6 +31,17 @@ function updateDate() {
 
 // Update date when page loads
 updateDate();
+
+// Hide email section if SHOW_EMAIL_SECTION is false
+function initializeEmailSection() {
+    if (!SHOW_EMAIL_SECTION) {
+        const emailSection = document.getElementById('email-section');
+        if (emailSection) {
+            emailSection.style.display = 'none';
+            console.log('📧 Email section hidden by SHOW_EMAIL_SECTION setting');
+        }
+    }
+}
 
 // Google Sheets API Configuration - Loaded from environment variables
 let GOOGLE_API_KEY = null;
@@ -147,6 +161,12 @@ async function addToGoogleSheets(name, email) {
 async function handleFormSubmission() {
     console.log('🚀 Form submission started');
     
+    // Check if email section is enabled
+    if (!SHOW_EMAIL_SECTION) {
+        console.log('📧 Form submission blocked - email section is disabled');
+        return;
+    }
+    
     const nameInput = document.getElementById('name-input');
     const emailInput = document.getElementById('email-input');
     const emailSection = document.getElementById('email-section');
@@ -203,42 +223,50 @@ async function handleFormSubmission() {
 
 // Add event listeners for form submission
 document.addEventListener('DOMContentLoaded', function() {
-    const nameInput = document.getElementById('name-input');
-    const emailInput = document.getElementById('email-input');
+    // Initialize email section visibility first
+    initializeEmailSection();
     
-    // Handle Enter key press on either input
-    nameInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            emailInput.focus();
-        }
-    });
-    
-    emailInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            handleFormSubmission();
-        }
-    });
-    
-    // Handle input focus for better UX
-    nameInput.addEventListener('focus', function() {
-        this.style.opacity = '1';
-    });
-    
-    nameInput.addEventListener('blur', function() {
-        if (!this.value) {
-            this.style.opacity = '0.8';
-        }
-    });
-    
-    emailInput.addEventListener('focus', function() {
-        this.style.opacity = '1';
-    });
-    
-    emailInput.addEventListener('blur', function() {
-        if (!this.value) {
-            this.style.opacity = '0.8';
-        }
-    });
+    // Only set up form event listeners if email section is enabled
+    if (SHOW_EMAIL_SECTION) {
+        const nameInput = document.getElementById('name-input');
+        const emailInput = document.getElementById('email-input');
+        
+        // Handle Enter key press on either input
+        nameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                emailInput.focus();
+            }
+        });
+        
+        emailInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleFormSubmission();
+            }
+        });
+        
+        // Handle input focus for better UX
+        nameInput.addEventListener('focus', function() {
+            this.style.opacity = '1';
+        });
+        
+        nameInput.addEventListener('blur', function() {
+            if (!this.value) {
+                this.style.opacity = '0.8';
+            }
+        });
+        
+        emailInput.addEventListener('focus', function() {
+            this.style.opacity = '1';
+        });
+        
+        emailInput.addEventListener('blur', function() {
+            if (!this.value) {
+                this.style.opacity = '0.8';
+            }
+        });
+    } else {
+        console.log('📧 Form event listeners skipped - email section is disabled');
+    }
     
     // Initialize Google API when page loads
     console.log('🚀 Initializing Google API...');
