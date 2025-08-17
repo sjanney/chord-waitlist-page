@@ -31,6 +31,8 @@ updateDate();
 
 // Email Form Handling
 async function handleFormSubmission() {
+    console.log('🚀 Form submission started');
+    
     const nameInput = document.getElementById('name-input');
     const emailInput = document.getElementById('email-input');
     const emailSection = document.getElementById('email-section');
@@ -39,8 +41,14 @@ async function handleFormSubmission() {
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
     
+    console.log('📝 Form data:', { name, email });
+    
     if (name && email) {
+        console.log('✅ Form validation passed, sending to API...');
+        
         try {
+            console.log('🌐 Making API request to /api/add-waitlist-entry...');
+            
             // Send data to Google Sheets via our server
             const response = await fetch('/api/add-waitlist-entry', {
                 method: 'POST',
@@ -50,16 +58,25 @@ async function handleFormSubmission() {
                 body: JSON.stringify({ name, email })
             });
             
+            console.log('📡 API Response status:', response.status);
+            console.log('📡 API Response headers:', response.headers);
+            
             const result = await response.json();
+            console.log('📡 API Response body:', result);
             
             if (result.success) {
-                console.log('Entry added to Google Sheets:', { name, email });
+                console.log('✅ Entry added to Google Sheets successfully:', { name, email });
             } else {
-                console.error('Failed to add entry:', result.error);
+                console.error('❌ Failed to add entry:', result.error);
+                console.error('❌ Error details:', result.details);
             }
         } catch (error) {
-            console.error('Error submitting form:', error);
+            console.error('💥 Network/API Error:', error);
+            console.error('💥 Error message:', error.message);
+            console.error('💥 Error stack:', error.stack);
         }
+        
+        console.log('🎭 Starting UI transition...');
         
         // Hide the email section with a fade effect
         emailSection.style.transition = 'opacity 0.5s ease-out';
@@ -70,11 +87,14 @@ async function handleFormSubmission() {
             
             // Show the goodbye message
             goodbyeMessage.style.opacity = '1';
+            console.log('✅ UI transition completed');
         }, 500);
         
         // Clear the inputs
         nameInput.value = '';
         emailInput.value = '';
+    } else {
+        console.log('❌ Form validation failed - missing name or email');
     }
 }
 
