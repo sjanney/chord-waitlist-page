@@ -4,12 +4,19 @@
   "description": "Chord waitlist page with Google Sheets integration",
   "scripts": {
     "dev": "vercel dev",
-    "build": "echo 'No build step required'"
+    "build": "echo 'No build step required'",
+    "test": "node test-local.js"
   },
   "dependencies": {
+    "dotenv": "^17.2.1",
     "googleapis": "^128.0.0"
   },
-  "keywords": ["waitlist", "google-sheets", "api", "vercel"],
+  "keywords": [
+    "waitlist",
+    "google-sheets",
+    "api",
+    "vercel"
+  ],
   "author": "Your Name",
   "license": "MIT"
 }

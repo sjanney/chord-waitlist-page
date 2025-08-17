@@ -1,5 +1,5 @@
 # Environment variables
-.env
+.env*
 
 # Google Service Account Key
 service-account-key.json
